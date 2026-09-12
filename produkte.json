@@ -1,44 +1,18 @@
 [
   {
-    "kategorie": "redux",
-    "kategorie_klasse": "tag-redux",
-    "kategorie_text": "Grafik-Mod",
-    "typ_badge": "Visual Enhancements",
-    "titel": "Ultra Vision Redux v1.2",
-    "beschreibung": "Komplette Überarbeitung der Grafik. Realistische Straßen, schärfere Schatten und verbesserte Nachtbeleuchtung bei stabilen FPS.",
-    "preis": "0,00 €",
-    "alter_preis": "39,99 €",
-    "free_tag": "Kostenloser Download",
-    "bild": "bilder/redux.jpg",
-    "platzhalter_text": "[ BILD-PLATZHALTER: REDUX ]"
-  },
-  {
-    "kategorie": "skin",
-    "kategorie_klasse": "tag-skin",
-    "kategorie_text": "Waffenskin",
-    "typ_badge": "Custom Textures",
-    "titel": "Chrome Python .357",
-    "beschreibung": "Hochauflösende Chrom-Oberfläche für den schweren Revolver mit detailreichen, eingravierten Verzierungen.",
-    "preis": "0,00 €",
-    "alter_preis": "19,99 €",
-    "free_tag": "Kostenloser Download",
-    "bild": "marsupilami.png",
-    "platzhalter_text": "[ BILD-PLATZHALTER: SKIN ]"
-  },
-  {
-  "kategorie": "redux",
-  "kategorie_klasse": "tag-redux",
-  "kategorie_text": "Grafik-Mod",
-  "typ_badge": "test",
-  "titel": "Test",
-  "beschreibung": "lalalalalala",
-  "preis": "0,00 €",
+  "kategorie": "Haut",
+  „kategorie_klasse“: „tag-skin“,
+  "kategorie_text": "Waffenleder",
+  "typ_badge": "Waffen Aussehen",
+  "Titel": "Micky Mods Black and White Gunpack",
+  „beschreibung“: „Micky Mods Black and White Gunpack“,
+  "Preis": "0,00 €",
   "alter_preis": "",
-  "free_tag": "Kostenloser Download",
-  "bild": "",
-  "platzhalter_text": "[ BILD-PLATZHALTER: REDUX ]",
-  "download_link": "https://discord.gg/3eJj2wNe4",
-  "passwort": "",
-  "youtube_link": "https://discord.gg/3eJj2wNe4"
+  „free_tag“: „Kostenloser Download“,
+  "bild": "bilder/marsupilami.png",
+  "platzhalter_text": "[ BILD-PLATZHALTER: SKIN ]",
+  "download_link": "https://link-target.net/1196001/black-and-white-gunpack",
+  "Passwort": "",
+  "youtube_link": ""
 }
 ]
