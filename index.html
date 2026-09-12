@@ -5,9 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>NEXUSMODS – Premium Modifikationen</title>
     <!-- Google Fonts für die saubere Shop-Schriftart -->
-    <link rel="preconnect" href="https://googleapis.com">
-    <link rel="preconnect" href="https://gstatic.com" crossorigin>
-    <link href="https://googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <!-- DEINE CSS-DATEI HIER VERKNÜPFT -->
     <link rel="stylesheet" href="style.css">
 </head>
@@ -26,12 +26,11 @@
                 NEXUSMODS<span class="logo-accent">/fivem</span>
             </div>
             
-            <!-- Suchleiste mit neuer ID "search-input" -->
-<div class="search-wrapper">
-    <input type="text" id="search-input" placeholder="Nach Skins, Sounds oder Packs suchen..." class="search-input">
-    <span class="search-icon">🔍</span>
-</div>
-
+            <!-- Suchleiste mit funktionierender ID -->
+            <div class="search-wrapper">
+                <input type="text" id="search-input" placeholder="Nach Skins, Sounds oder Packs suchen..." class="search-input">
+                <span class="search-icon">🔍</span>
+            </div>
 
             <!-- Navigation & Status -->
             <nav class="store-nav">
@@ -51,7 +50,6 @@
             <div class="filter-box">
                 <h3 class="filter-title">Filter nach:</h3>
                 <div class="filter-menu">
-                    <!-- HIER WURDEN DIE DATA-ATTRIBUTE HINZUGEFÜGT -->
                     <button class="filter-btn active" data-kategorie="alle">Alle Artikel</button>
                     <button class="filter-btn" data-kategorie="redux">Redux & Grafik</button>
                     <button class="filter-btn" data-kategorie="skin">Waffenskins</button>
@@ -65,15 +63,15 @@
             
             <!-- Status Leiste -->
             <div class="status-bar">
-                <div class="status-count">Zeige <span id="produkt-anzahl">3 exklusive Artikel</span></div>
+                <div class="status-count">Zeige <span id="produkt-anzahl">0 exklusive Artikel</span></div>
                 <div class="sort-trigger">
                     Sortieren nach: <span class="sort-accent">Beliebtheit ▾</span>
                 </div>
             </div>
 
-            <!-- PRODUKT GRID (HIER WURDE DIE ID HINZUGEFÜGT) -->
+            <!-- PRODUKT GRID -->
             <div id="produkt-container" class="product-grid">
-                <!-- Die Produkte werden hier jetzt automatisch per JavaScript geladen -->
+                <!-- Die Produkte werden hier automatisch per JavaScript geladen -->
             </div>
         </main>
 
