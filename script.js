@@ -3,7 +3,7 @@ document.addEventListener("DOMContentLoaded", () => {
     let aktuelleKategorie = 'alle';
     let aktuellesAudio = null;
     let aktuellerPlayBtn = null;
-    let aktuelleAnsicht = 'katalog'; // Kann 'katalog', 'neuheiten' oder 'support' sein
+    let aktuelleAnsicht = 'katalog';
 
     // 1. Daten aus der JSON-Datei laden
     fetch(`produkte.json?v=${new Date().getTime()}`)
@@ -13,12 +13,12 @@ document.addEventListener("DOMContentLoaded", () => {
             rendereProdukte(alleProdukte);
             setupFilter();
             setupSuche();
-            setupHeaderNav(); // Aktiviert die Neuheiten- und Support-Knöpfe im Header
+            setupHeaderNav(); 
         })
         .catch(error => {
             console.error("Fehler beim Laden der Produkte:", error);
             const container = document.getElementById('produkt-container');
-            if (container) container.innerHTML = '<p style="color: #ef4444; text-align:center;">Fehler beim Laden der produkte.json. Bitte überprüfe das Dateiformat.</p>';
+            if (container) container.innerHTML = '<p style="color: #ef4444; text-align:center;">Fehler beim Laden der produkte.json.</p>';
         });
 
     // 2. Funktion, die das HTML baut
@@ -26,7 +26,6 @@ document.addEventListener("DOMContentLoaded", () => {
         const container = document.getElementById('produkt-container');
         if (!container) return;
         
-        // Laufendes Audio stoppen, wenn die Ansicht neu gerendert wird
         if (aktuellesAudio) {
             aktuellesAudio.pause();
             aktuellesAudio = null;
@@ -44,7 +43,7 @@ document.addEventListener("DOMContentLoaded", () => {
         }
 
         if (produkte.length === 0) {
-            container.innerHTML = '<p style="color: #9ca3af; text-align:center; grid-column: 1/-1; padding: 40px 0;">Keine Produkte in dieser Kategorie gefunden.</p>';
+            container.innerHTML = '<p style="color: #9ca3af; text-align:center; grid-column: 1/-1; padding: 40px 0;">Keine Produkte gefunden.</p>';
             return;
         }
 
@@ -56,7 +55,6 @@ document.addEventListener("DOMContentLoaded", () => {
                 mediaInhalt = `<span class="card-media-label">${item.platzhalter_text || '[ BILD ]'}</span>`;
             }
 
-            // Passwort-Bereich
             let passwortHTML = '';
             if (item.passwort && item.passwort.trim() !== "") {
                 passwortHTML = `
@@ -67,17 +65,15 @@ document.addEventListener("DOMContentLoaded", () => {
                 `;
             }
 
-            // YouTube-Button
             let youtubeHTML = '';
             if (item.youtube_link && item.youtube_link.trim() !== "") {
                 youtubeHTML = `
-                    <a href="${item.youtube_link}" target="_blank" class="btn-action" style="background-color: rgba(225, 29, 72, 0.1); color: #e11d48; border-color: rgba(225, 29, 72, 0.3); margin-bottom: 8px;">
+                    <a href="${item.youtube_link}" target="_blank" class="btn-action" style="background-color: rgba(225, 29, 72, 0.1); color: #e11d48; border-color: rgba(225, 29, 72, 0.3); margin-bottom: 8px; text-decoration:none;">
                         📺 Video-Vorschau
                     </a>
                 `;
             }
 
-            // Audio-Player Button
             let audioHTML = '';
             if (item.sound_datei && item.sound_datei.trim() !== "") {
                 audioHTML = `
@@ -111,18 +107,17 @@ document.addEventListener("DOMContentLoaded", () => {
                         ${audioHTML}
                         ${passwortHTML}
                         ${youtubeHTML}
-                        <a href="${item.download_link || '#'}" target="_blank" class="btn-action">Details & Download</a>
+                        <a href="${item.download_link || '#'}" target="_blank" class="btn-action" style="text-decoration:none;">Details & Download</a>
                     </div>
                 </div>
             `;
             container.innerHTML += produktHTML;
         });
 
-        // Event Listener für die Sound-Buttons aktivieren
         setupAudioEvents();
     }
 
-    // Audio Steuerungs-Logik
+    // Audio-Logik
     function setupAudioEvents() {
         const audioButtons = document.querySelectorAll('.btn-audio-player');
         audioButtons.forEach(button => {
@@ -165,7 +160,7 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 
-    // 3. Logik für die Filter-Buttons links (Sidebar)
+    // Sidebar Filter Logik
     function setupFilter() {
         const buttons = document.querySelectorAll('[data-kategorie]');
         const searchInput = document.getElementById('search-input');
@@ -188,19 +183,17 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 
-    // 4. Logik für die Suchleiste oben
+    // Live Suche Logik
     function setupSuche() {
         const searchInput = document.getElementById('search-input');
         if (!searchInput) return;
 
         searchInput.addEventListener('input', (e) => {
             const suchBegriff = e.target.value.toLowerCase().trim();
-
             let ergebnis = alleProdukte;
             if (aktuelleKategorie !== 'alle') {
                 ergebnis = alleProdukte.filter(p => p.kategorie === aktuelleKategorie);
             }
-
             if (suchBegriff !== '') {
                 ergebnis = ergebnis.filter(p => {
                     const titelPasst = p.titel ? p.titel.toLowerCase().includes(suchBegriff) : false;
@@ -208,14 +201,22 @@ document.addEventListener("DOMContentLoaded", () => {
                     return titelPasst || beschreibungPasst;
                 });
             }
-
             rendereProdukte(ergebnis);
         });
     }
 
-    // 5. Logik für die Haupt-Navigation oben im Header (Katalog, Neuheiten, Support)
+    // Header Navigation Logik
     function setupHeaderNav() {
         const linkKatalog = document.getElementById('nav-katalog');
         const linkNeuheiten = document.getElementById('nav-neuheiten');
         const linkSupport = document.getElementById('nav-support');
         
+        const catalogContent = document.getElementById('catalog-main-content');
+        const supportContent = document.getElementById('support-main-content');
+        const sidebar = document.getElementById('store-sidebar');
+        const searchWrapper = document.getElementById('main-search-wrapper');
+
+        // Falls die neue HTML noch nicht aktiv ist, breche hier ab, um Abstürze zu verhindern
+        if (!linkKatalog || !catalogContent) return;
+
+        function wechsleAnsicht(ansicht) {
