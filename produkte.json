@@ -1,41 +1,147 @@
-[
-  {
-    "kategorie": "redux",
-    "kategorie_klasse": "tag-redux",
-    "kategorie_text": "Grafik-Mod",
-    "typ_badge": "Visual Enhancements",
-    "titel": "Ultra Vision Redux v1.2",
-    "beschreibung": "Komplette Überarbeitung der Grafik. Realistische Straßen, schärfere Schatten und verbesserte Nachtbeleuchtung bei stabilen FPS.",
-    "preis": "0,00 €",
-    "alter_preis": "39,99 €",
-    "free_tag": "Kostenloser Download",
-    "bild": "bilder/redux.jpg",
-    "platzhalter_text": "[ BILD-PLATZHALTER: REDUX ]"
-  },
-  {
-    "kategorie": "skin",
-    "kategorie_klasse": "tag-skin",
-    "kategorie_text": "Waffenskin",
-    "typ_badge": "Custom Textures",
-    "titel": "Chrome Python .357",
-    "beschreibung": "Hochauflösende Chrom-Oberfläche für den schweren Revolver mit detailreichen, eingravierten Verzierungen.",
-    "preis": "0,00 €",
-    "alter_preis": "19,99 €",
-    "free_tag": "Kostenloser Download",
-    "bild": "marsupilami.png",
-    "platzhalter_text": "[ BILD-PLATZHALTER: SKIN ]"
-  },
-  { 
-  "kategorie": "redux", 
-  "kategorie_klasse": "tag-redux", 
-  "kategorie_text": "Grafik-Mod", 
-  "typ_badge": "test", 
-  "titel": "Test", 
-  "beschreibung": "test", 
-  "preis": "0,00 €", 
-  "alter_preis": "", 
-  "free_tag": "Kostenloser Download", 
-  "bild": "", 
-  "platzhalter_text": "[ BILD-PLATZHALTER: REDUX ]" 
-}
-]
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NEXUSMODS – Admin Panel</title>
+    <link rel="preconnect" href="https://googleapis.com">
+    <link rel="preconnect" href="https://gstatic.com" crossorigin>
+    <link href="https://googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .admin-box {
+            background-color: #161920;
+            border: 1px solid rgba(34, 37, 45, 0.8);
+            border-radius: 12px;
+            padding: 30px;
+            max-width: 600px;
+            margin: 40px auto;
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.3);
+        }
+        .form-group { margin-bottom: 20px; }
+        .form-group label {
+            display: block; font-size: 12px; font-weight: 700;
+            text-transform: uppercase; color: #9ca3af; margin-bottom: 8px;
+        }
+        .form-group input, .form-group textarea, .form-group select {
+            width: 100%; background-color: #20242f; border: 1px solid rgba(55, 65, 81, 0.5);
+            border-radius: 8px; padding: 12px; font-size: 14px; color: #e2e8f0; outline: none; box-sizing: border-box;
+        }
+        .form-group input:focus, .form-group textarea:focus, .form-group select:focus { border-color: #06b6d4; }
+        .btn-submit {
+            width: 100%; background-color: #06b6d4; color: #000000; font-weight: 700;
+            border: none; padding: 14px; border-radius: 8px; cursor: pointer; font-size: 14px; transition: opacity 0.2s;
+        }
+        .btn-submit:hover { opacity: 0.9; }
+        .output-box { margin-top: 30px; display: none; }
+        .output-code {
+            background-color: #090b0f; padding: 15px; border-radius: 8px; border: 1px solid #22252d;
+            overflow-x: auto; white-space: pre-wrap; font-family: monospace; font-size: 13px; color: #34d399;
+        }
+    </style>
+</head>
+<body>
+
+    <header class="store-header">
+        <div class="header-container">
+            <div class="logo">NEXUSMODS<span class="logo-accent">/admin panel</span></div>
+            <a href="index.html" class="nav-link">← Zurück zum Shop</a>
+        </div>
+    </header>
+
+    <div class="admin-box">
+        <h2 style="margin-top:0; color:#fff; margin-bottom: 24px;">Neue Modifikation eintragen</h2>
+        <form id="modForm">
+            <div class="form-group">
+                <label>Titel der Mod</label>
+                <input type="text" id="titel" placeholder="z.B. Ultra Vision Redux v1.2" required>
+            </div>
+            <div class="form-group">
+                <label>Beschreibung</label>
+                <textarea id="beschreibung" rows="3" placeholder="Beschreibe die Modifikation..." required></textarea>
+            </div>
+            <div class="form-group">
+                <label>Kategorie</label>
+                <select id="kategorie" required>
+                    <option value="redux">Redux & Grafik</option>
+                    <option value="skin">Waffenskin</option>
+                    <option value="sound">Waffensounds</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Typ Badge</label>
+                <input type="text" id="typ_badge" placeholder="z.B. Visual Enhancements" required>
+            </div>
+            <div class="form-group">
+                <label>Alter Preis (optional)</label>
+                <input type="text" id="alter_preis" placeholder="z.B. 19,99 €">
+            </div>
+            <div class="form-group">
+                <label>Bild-Dateiname (liegt im Ordner 'bilder')</label>
+                <input type="text" id="bild" placeholder="z.B. mein-skin.jpg">
+            </div>
+
+            <!-- NEUE FELDER HIER -->
+            <div class="form-group">
+                <label style="color: #06b6d4;">Download-Link (z.B. Mediafire, Mega...)</label>
+                <input type="url" id="download_link" placeholder="https://..." required>
+            </div>
+            <div class="form-group">
+                <label style="color: #06b6d4;">Archiv-Passwort (optional)</label>
+                <input type="text" id="passwort" placeholder="z.B. nexus123 (leer lassen wenn keins)">
+            </div>
+            <div class="form-group">
+                <label style="color: #06b6d4;">YouTube Preview-Link (optional)</label>
+                <input type="url" id="youtube_link" placeholder="https://youtube.com?...">
+            </div>
+
+            <button type="submit" class="btn-submit">JSON-Code erzeugen</button>
+        </form>
+
+        <div class="output-box" id="outputBox">
+            <h3 style="color:#fff; font-size:14px; margin-bottom: 10px;">📋 Kopiere diesen Block:</h3>
+            <div class="output-code" id="outputCode"></div>
+            <p style="font-size:13px; color:#9ca3af; margin-top:15px; line-height: 1.5;">
+                💡 <strong>Letzter Schritt:</strong> Öffne deine <code>produkte.json</code> auf GitHub, klicke auf Bearbeiten, füge diesen Block als neues Element in die Liste ein und klicke auf Speichern. Fertig!
+            </p>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('modForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const kategorie = document.getElementById('kategorie').value;
+            let katText = 'Grafik-Mod', katKlasse = 'tag-redux';
+            
+            if(kategorie === 'skin') { katText = 'Waffenskin'; katKlasse = 'tag-skin'; }
+            if(kategorie === 'sound') { katText = 'Waffensounds'; katKlasse = 'tag-sound'; }
+
+            const bildName = document.getElementById('bild').value.trim();
+
+            const neuesProdukt = {
+                kategorie: kategorie,
+                kategorie_klasse: katKlasse,
+                kategorie_text: katText,
+                typ_badge: document.getElementById('typ_badge').value,
+                titel: document.getElementById('titel').value,
+                beschreibung: document.getElementById('beschreibung').value,
+                preis: "0,00 €",
+                alter_preis: document.getElementById('alter_preis').value || "",
+                free_tag: "Kostenloser Download",
+                bild: bildName ? "bilder/" + bildName : "",
+                platzhalter_text: `[ BILD-PLATZHALTER: ${kategorie.toUpperCase()} ]`,
+                // Neue Variablen werden hier ins JSON geschrieben:
+                download_link: document.getElementById('download_link').value,
+                passwort: document.getElementById('passwort').value || "",
+                youtube_link: document.getElementById('youtube_link').value || ""
+            };
+
+            const outputCode = document.getElementById('outputCode');
+            outputCode.innerText = JSON.stringify(neuesProdukt, null, 2);
+            document.getElementById('outputBox').style.display = 'block';
+            document.getElementById('outputBox').scrollIntoView({ behavior: 'smooth' });
+        });
+    </script>
+</body>
+</html>
