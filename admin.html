@@ -37,7 +37,7 @@
         .output-code {
             background-color: #090b0f; padding: 15px; border-radius: 8px; border: 1px solid #22252d;
             overflow-x: auto; white-space: pre; font-family: monospace; font-size: 13px; color: #34d399;
-            user-select: all; /* Ermöglicht das Kopieren des gesamten Blocks mit einem Klick */
+            user-select: all;
         }
     </style>
 </head>
@@ -55,7 +55,7 @@
         <form id="modForm">
             <div class="form-group">
                 <label>Titel der Mod</label>
-                <input type="text" id="titel" placeholder="z.B. Ultra Vision Redux v1.2" required>
+                <input type="text" id="titel" placeholder="z.B. Heavy Pistol Sound Pack" required>
             </div>
             <div class="form-group">
                 <label>Beschreibung</label>
@@ -71,27 +71,34 @@
             </div>
             <div class="form-group">
                 <label>Typ Badge</label>
-                <input type="text" id="typ_badge" placeholder="z.B. Visual Enhancements" required>
+                <input type="text" id="typ_badge" placeholder="z.B. Audio Pack" required>
             </div>
             <div class="form-group">
-                <label>Alter Preis (optional, z.B. 19,99 €)</label>
-                <input type="text" id="alter_preis" placeholder="Leer lassen, wenn kein vorheriger Preis">
+                <label>Alter Preis (optional)</label>
+                <input type="text" id="alter_preis" placeholder="z.B. 14,99 €">
             </div>
             <div class="form-group">
                 <label>Bild-Dateiname (liegt im Ordner 'bilder')</label>
-                <input type="text" id="bild" placeholder="z.B. mein-skin.jpg (leer lassen für Platzhalter)">
+                <input type="text" id="bild" placeholder="z.B. pistol.jpg (leer lassen für Platzhalter)">
             </div>
             <div class="form-group">
-                <label style="color: #06b6d4;">Download-Link (z.B. Mediafire, Mega...)</label>
+                <label style="color: #06b6d4;">Download-Link</label>
                 <input type="url" id="download_link" placeholder="https://..." required>
             </div>
             <div class="form-group">
                 <label style="color: #06b6d4;">Archiv-Passwort (optional)</label>
-                <input type="text" id="passwort" placeholder="z.B. nexus123 (leer lassen wenn keins)">
+                <input type="text" id="passwort" placeholder="z.B. nexus123">
             </div>
             <div class="form-group">
                 <label style="color: #06b6d4;">YouTube Preview-Link (optional)</label>
                 <input type="url" id="youtube_link" placeholder="https://youtube.com?...">
+            </div>
+
+            <!-- NEUES INTEGRATIONFELD FÜR SOUNDS -->
+            <div class="form-group" style="border: 1px solid rgba(6, 182, 212, 0.3); padding: 15px; border-radius: 8px; background: rgba(6, 182, 212, 0.03);">
+                <label style="color: #06b6d4; margin-bottom: 4px;">🔊 Sound-Dateiname (Nur für Waffensounds wichtig)</label>
+                <p style="font-size: 11px; color: #9ca3af; margin: 0 0 10px 0;">Erlaubt sind .mp3 oder .wav Dateien, die du in einen Ordner namens 'sounds' hochlädst.</p>
+                <input type="text" id="sound_datei" placeholder="z.B. pistol_shoot.mp3 (leer lassen wenn kein Audio)">
             </div>
 
             <button type="submit" class="btn-submit">JSON-Code erzeugen</button>
@@ -101,7 +108,7 @@
             <h3 style="color:#fff; font-size:14px; margin-bottom: 10px;">📋 Kopiere diesen Block:</h3>
             <pre class="output-code" id="outputCode"></pre>
             <p style="font-size:13px; color:#9ca3af; margin-top:15px; line-height: 1.5;">
-                💡 <strong>Letzter Schritt:</strong> Öffne deine <code>produkte.json</code> auf GitHub, klicke auf Bearbeiten, füge diesen Block als neues Element in die Liste ein und klicke auf Speichern. Fertig!
+                💡 <strong>Letzter Schritt:</strong> Öffne deine <code>produkte.json</code> auf GitHub, klicke auf Bearbeiten, füge diesen Block als neues Element in die Liste ein und klicke auf Speichern.
             </p>
         </div>
     </div>
@@ -117,6 +124,7 @@
             if(kategorie === 'sound') { katText = 'Waffensounds'; katKlasse = 'tag-sound'; }
 
             const bildName = document.getElementById('bild').value.trim();
+            const audioName = document.getElementById('sound_datei').value.trim();
 
             const neuesProdukt = {
                 kategorie: kategorie,
@@ -132,14 +140,13 @@
                 platzhalter_text: `[ BILD-PLATZHALTER: ${kategorie.toUpperCase()} ]`,
                 download_link: document.getElementById('download_link').value,
                 passwort: document.getElementById('passwort').value || "",
-                youtube_link: document.getElementById('youtube_link').value || ""
+                youtube_link: document.getElementById('youtube_link').value || "",
+                // Neue Sound-Variable:
+                sound_datei: audioName ? "sounds/" + audioName : ""
             };
 
-            // Hier erzwingen wir, dass absolut KEINE schrägen Anführungszeichen durchrutschen können
-            let jsonString = JSON.stringify(neuesProdukt, null, 2);
-            
             const outputCode = document.getElementById('outputCode');
-            outputCode.textContent = jsonString; // textContent verhindert automatische HTML-Formtierungen des Browsers
+            outputCode.textContent = JSON.stringify(neuesProdukt, null, 2);
             
             document.getElementById('outputBox').style.display = 'block';
             document.getElementById('outputBox').scrollIntoView({ behavior: 'smooth' });
