@@ -36,7 +36,8 @@
         .output-box { margin-top: 30px; display: none; }
         .output-code {
             background-color: #090b0f; padding: 15px; border-radius: 8px; border: 1px solid #22252d;
-            overflow-x: auto; white-space: pre-wrap; font-family: monospace; font-size: 13px; color: #34d399;
+            overflow-x: auto; white-space: pre; font-family: monospace; font-size: 13px; color: #34d399;
+            user-select: all; /* Ermöglicht das Kopieren des gesamten Blocks mit einem Klick */
         }
     </style>
 </head>
@@ -73,15 +74,13 @@
                 <input type="text" id="typ_badge" placeholder="z.B. Visual Enhancements" required>
             </div>
             <div class="form-group">
-                <label>Alter Preis (optional)</label>
-                <input type="text" id="alter_preis" placeholder="z.B. 19,99 €">
+                <label>Alter Preis (optional, z.B. 19,99 €)</label>
+                <input type="text" id="alter_preis" placeholder="Leer lassen, wenn kein vorheriger Preis">
             </div>
             <div class="form-group">
                 <label>Bild-Dateiname (liegt im Ordner 'bilder')</label>
-                <input type="text" id="bild" placeholder="z.B. mein-skin.jpg">
+                <input type="text" id="bild" placeholder="z.B. mein-skin.jpg (leer lassen für Platzhalter)">
             </div>
-
-            <!-- NEUE FELDER HIER -->
             <div class="form-group">
                 <label style="color: #06b6d4;">Download-Link (z.B. Mediafire, Mega...)</label>
                 <input type="url" id="download_link" placeholder="https://..." required>
@@ -100,7 +99,7 @@
 
         <div class="output-box" id="outputBox">
             <h3 style="color:#fff; font-size:14px; margin-bottom: 10px;">📋 Kopiere diesen Block:</h3>
-            <div class="output-code" id="outputCode"></div>
+            <pre class="output-code" id="outputCode"></pre>
             <p style="font-size:13px; color:#9ca3af; margin-top:15px; line-height: 1.5;">
                 💡 <strong>Letzter Schritt:</strong> Öffne deine <code>produkte.json</code> auf GitHub, klicke auf Bearbeiten, füge diesen Block als neues Element in die Liste ein und klicke auf Speichern. Fertig!
             </p>
@@ -131,14 +130,17 @@
                 free_tag: "Kostenloser Download",
                 bild: bildName ? "bilder/" + bildName : "",
                 platzhalter_text: `[ BILD-PLATZHALTER: ${kategorie.toUpperCase()} ]`,
-                // Neue Variablen werden hier ins JSON geschrieben:
                 download_link: document.getElementById('download_link').value,
                 passwort: document.getElementById('passwort').value || "",
                 youtube_link: document.getElementById('youtube_link').value || ""
             };
 
+            // Hier erzwingen wir, dass absolut KEINE schrägen Anführungszeichen durchrutschen können
+            let jsonString = JSON.stringify(neuesProdukt, null, 2);
+            
             const outputCode = document.getElementById('outputCode');
-            outputCode.innerText = JSON.stringify(neuesProdukt, null, 2);
+            outputCode.textContent = jsonString; // textContent verhindert automatische HTML-Formtierungen des Browsers
+            
             document.getElementById('outputBox').style.display = 'block';
             document.getElementById('outputBox').scrollIntoView({ behavior: 'smooth' });
         });
