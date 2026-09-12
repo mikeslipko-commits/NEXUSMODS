@@ -3,6 +3,7 @@ document.addEventListener("DOMContentLoaded", () => {
     let aktuelleKategorie = 'alle';
     let aktuellesAudio = null; // Speichert den aktuell spielenden Sound
     let aktuellerPlayBtn = null; // Speichert den aktiven Button
+    let aktuelleAnsicht = 'katalog'; // Kann 'katalog', 'neuheiten' oder 'support' sein
 
     // 1. Daten aus der JSON-Datei laden
     fetch(`produkte.json?v=${new Date().getTime()}`)
@@ -12,6 +13,7 @@ document.addEventListener("DOMContentLoaded", () => {
             rendereProdukte(alleProdukte);
             setupFilter();
             setupSuche();
+            setupHeaderNav(); // Aktiviert die Neuheiten- und Support-Knöpfe im Header
         })
         .catch(error => console.error("Fehler beim Laden der Produkte:", error));
 
@@ -30,7 +32,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
         const anzahlSpan = document.getElementById('produkt-anzahl');
         if (anzahlSpan) {
-            anzahlSpan.innerHTML = `Zeige <span>${produkte.length} exklusive${produkte.length === 1 ? 'r' : ''} Artikel</span>`;
+            let labelText = `Zeige <span>${produkte.length} exklusive${produkte.length === 1 ? 'r' : ''} Artikel</span>`;
+            if (aktuelleAnsicht === 'neuheiten') {
+                labelText = `🔥 Unsere <span>${produkte.length} neuesten Modifikationen</span>`;
+            }
+            anzahlSpan.innerHTML = labelText;
         }
 
         produkte.forEach((item, index) => {
@@ -62,7 +68,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 `;
             }
 
-            // NEU: Audio-Player Button (Erscheint nur, wenn eine Sound-Datei hinterlegt ist)
+            // Audio-Player Button
             let audioHTML = '';
             if (item.sound_datei && item.sound_datei.trim() !== "") {
                 audioHTML = `
@@ -111,14 +117,13 @@ document.addEventListener("DOMContentLoaded", () => {
         setupAudioEvents();
     }
 
-    // NEU: Audio Event Logik
+    // Audio Event Logik
     function setupAudioEvents() {
         const audioButtons = document.querySelectorAll('.btn-audio-player');
         
         audioButtons.forEach(button => {
             button.addEventListener('click', () => {
                 const soundPath = button.getAttribute('data-sound');
-                const textSpan = button.querySelector('span');
 
                 // 1. Fall: Klick auf den bereits laufenden Sound -> Pause
                 if (aktuellesAudio && aktuellerPlayBtn === button) {
@@ -152,7 +157,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
                 aktuellesAudio.play().catch(err => {
                     console.error("Audio-Wiedergabe blockiert:", err);
-                    alert("Sound-Datei konnte nicht geladen werden. Prüfe, ob die Datei im Ordner 'sounds' liegt!");
                     button.classList.remove('playing');
                     button.innerHTML = '<span>▶</span> Sound abspielen';
                 });
@@ -168,7 +172,7 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 
-    // 3. Logik für die Filter-Buttons links
+    // 3. Logik für die Filter-Buttons links (Sidebar)
     function setupFilter() {
         const buttons = document.querySelectorAll('[data-kategorie]');
         const searchInput = document.getElementById('search-input');
@@ -211,7 +215,15 @@ document.addEventListener("DOMContentLoaded", () => {
                     return titelPasst || beschreibungPasst;
                 });
             }
+
             rendereProdukte(ergebnis);
         });
     }
-});
+
+    // 5. Logik für die Haupt-Navigation oben im Header (Katalog, Neuheiten, Support)
+    function setupHeaderNav() {
+        const linkKatalog = document.getElementById('nav-katalog');
+        const linkNeuheiten = document.getElementById('nav-neuheiten');
+        const linkSupport = document.getElementById('nav-support');
+        
+        const catalogContent = document.getElementById('catalog-main-content');
