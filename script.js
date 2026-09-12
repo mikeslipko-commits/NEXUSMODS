@@ -2,8 +2,9 @@ document.addEventListener("DOMContentLoaded", () => {
     let alleProdukte = [];
     let aktuelleKategorie = 'alle'; // Speichert die aktuell gewählte Kategorie
 
-    // 1. Daten aus der JSON-Datei laden
-    fetch('produkte.json')
+    // 1. Daten aus der JSON-Datei laden (MIT CACHE-BUSTING TRICK)
+    // Der Zeitstempel (?v=...) zwingt GitHub, dir IMMER die allerneueste JSON zu liefern
+    fetch(`produkte.json?v=${new Date().getTime()}`)
         .then(response => response.json())
         .then(data => {
             alleProdukte = data;
@@ -92,7 +93,7 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 
-    // 4. NEU: Logik für die Suchleiste oben
+    // 4. Logik für die Suchleiste oben
     function setupSuche() {
         const searchInput = document.getElementById('search-input');
         if (!searchInput) return;
