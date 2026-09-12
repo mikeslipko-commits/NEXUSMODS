@@ -24,5 +24,18 @@
     "free_tag": "Kostenloser Download",
     "bild": "marsupilami.png",
     "platzhalter_text": "[ BILD-PLATZHALTER: SKIN ]"
-  }
+  },
+  { 
+  "kategorie": "redux", 
+  "kategorie_klasse": "tag-redux", 
+  "kategorie_text": "Grafik-Mod", 
+  "typ_badge": "test", 
+  "titel": "Test", 
+  "beschreibung": "test", 
+  "preis": "0,00 €", 
+  "alter_preis": "", 
+  "free_tag": "Kostenloser Download", 
+  "bild": "", 
+  "platzhalter_text": "[ BILD-PLATZHALTER: REDUX ]" 
+}
 ]
