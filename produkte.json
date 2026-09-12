@@ -82,5 +82,22 @@
   "passwort": "",
   "youtube_link": "https://youtu.be/IaCgacu3do4?si=0SXKJDWSsezZgfy7",
   "sound_datei": ""
+},
+  {
+  "kategorie": "sound",
+  "kategorie_klasse": "tag-sound",
+  "kategorie_text": "Waffensounds",
+  "typ_badge": "Gun-Sounds",
+  "titel": "Marsupilami_Modz_1",
+  "beschreibung": "Marsupilami_Modz_1",
+  "preis": "0,00 €",
+  "alter_preis": "",
+  "free_tag": "Kostenloser Download",
+  "bild": "bilder/images.jpg",
+  "platzhalter_text": "[ BILD-PLATZHALTER: SOUND ]",
+  "download_link": "https://cdn.discordapp.com/attachments/1210739816246018078/1210906723334750218/Marsupilami_Modz_1.wav?ex=6aa5dc04&is=6aa48a84&hm=79b0d50f802a14f95958ab0529ee337d519eee0d144c80ea218dd06a2261af35&",
+  "passwort": "",
+  "youtube_link": "",
+  "sound_datei": "sounds/Marsupilami_Modz_1.wav"
 }
 ]
