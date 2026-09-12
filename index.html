@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NEXUSMODS – Premium Modifikationen</title>
+    <!-- Google Fonts für die saubere Shop-Schriftart -->
+    <link rel="preconnect" href="https://googleapis.com">
+    <link rel="preconnect" href="https://gstatic.com" crossorigin>
+    <link href="https://googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- DEINE CSS-DATEI HIER VERKNÜPFT -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- BANNER -->
+    <div class="promo-banner">
+        Kostenloser Premium-Download • Keine Registrierung • Sofort einsatzbereit
+    </div>
+
+    <!-- MAIN NAV -->
+    <header class="store-header">
+        <div class="header-container">
+            <!-- Logo -->
+            <div class="logo">
+                NEXUSMODS<span class="logo-accent">/fivem</span>
+            </div>
+            
+            <!-- Suchleiste mit neuer ID "search-input" -->
+<div class="search-wrapper">
+    <input type="text" id="search-input" placeholder="Nach Skins, Sounds oder Packs suchen..." class="search-input">
+    <span class="search-icon">🔍</span>
+</div>
+
+
+            <!-- Navigation & Status -->
+            <nav class="store-nav">
+                <a href="#" class="nav-link active">Katalog</a>
+                <a href="#" class="nav-link">Neuheiten</a>
+                <a href="#" class="nav-link">Support</a>
+                <div class="sale-badge">⚡ 0,00 € SALE</div>
+            </nav>
+        </div>
+    </header>
+
+    <!-- KATALOG CONTENT WRAPPER -->
+    <div class="store-wrapper">
+        
+        <!-- SIDEBAR: FILTER -->
+        <aside class="store-sidebar">
+            <div class="filter-box">
+                <h3 class="filter-title">Filter nach:</h3>
+                <div class="filter-menu">
+                    <!-- HIER WURDEN DIE DATA-ATTRIBUTE HINZUGEFÜGT -->
+                    <button class="filter-btn active" data-kategorie="alle">Alle Artikel</button>
+                    <button class="filter-btn" data-kategorie="redux">Redux & Grafik</button>
+                    <button class="filter-btn" data-kategorie="skin">Waffenskins</button>
+                    <button class="filter-btn" data-kategorie="sound">Waffensounds</button>
+                </div>
+            </div>
+        </aside>
+
+        <!-- PRODUKT LISTE -->
+        <main class="catalog-content">
+            
+            <!-- Status Leiste -->
+            <div class="status-bar">
+                <div class="status-count">Zeige <span id="produkt-anzahl">3 exklusive Artikel</span></div>
+                <div class="sort-trigger">
+                    Sortieren nach: <span class="sort-accent">Beliebtheit ▾</span>
+                </div>
+            </div>
+
+            <!-- PRODUKT GRID (HIER WURDE DIE ID HINZUGEFÜGT) -->
+            <div id="produkt-container" class="product-grid">
+                <!-- Die Produkte werden hier jetzt automatisch per JavaScript geladen -->
+            </div>
+        </main>
+
+    </div>
+
+    <!-- FOOTER -->
+    <footer class="footer-container" style="text-align: center; margin-top: 40px; line-height: 1.8; width: 100%;">
+        <div class="footer-text" style="color: #6b7280; font-size: 12px; padding: 0 20px;">
+            Diese Plattform ist ein reiner Katalog für kostenlose Fan-Modifikationen. Wir stehen in keinerlei Verbindung zu Rockstar Games oder Cfx.re.
+        </div>
+        <div class="footer-credits" style="color: #a0a0a0; font-size: 14px; margin-top: 12px;">
+            Design & Powered by <span class="designer-name" style="color: #c399ff; font-weight: bold; text-shadow: 0 0 10px #b388ff, 0 0 20px #b388ff, 0 0 30px rgba(179, 136, 255, 0.5);">Mike Weshlove</span>
+        </div>
+    </footer>
+
+    <!-- Das Skript wird ganz unten angehängt -->
+    <script src="script.js"></script>
+</body>
+</html>

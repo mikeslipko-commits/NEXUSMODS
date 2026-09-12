@@ -1,0 +1,32 @@
+backend:
+  name: github
+  repo: DEIN_GITHUB_NAME/DEIN_REPOSITROY_NAME # HIER ANPASSEN!
+  branch: main # Oder 'master', je nachdem wie dein Haupt-Branch heißt
+
+media_folder: "bilder" # Wo hochgeladene Mod-Bilder gespeichert werden
+public_folder: "bilder"
+
+collections:
+  - name: "produkte"
+    label: "Shop Produkte"
+    label_singular: "Produkt"
+    files:
+      - file: "produkte.json"
+        label: "Produkt Liste"
+        name: "produkt_liste"
+        fields:
+          - label: "Alle Produkte"
+            name: "produkte"
+            widget: "list"
+            fields:
+              - { label: "Titel", name: "titel", widget: "string" }
+              - { label: "Beschreibung", name: "beschreibung", widget: "text" }
+              - { label: "Kategorie (redux, skin, sound)", name: "kategorie", widget: "string" }
+              - { label: "Kategorie Text (z.B. Grafik-Mod)", name: "kategorie_text", widget: "string" }
+              - { label: "CSS-Klasse (tag-redux, tag-skin, tag-sound)", name: "kategorie_klasse", widget: "string" }
+              - { label: "Typ Badge (z.B. Audio Pack)", name: "typ_badge", widget: "string" }
+              - { label: "Preis", name: "preis", widget: "string", default: "0,00 €" }
+              - { label: "Alter Preis", name: "alter_preis", widget: "string" }
+              - { label: "Free Tag", name: "free_tag", widget: "string", default: "Kostenloser Download" }
+              - { label: "Mod Bild", name: "bild", widget: "image", required: false }
+              - { label: "Bild-Platzhalter Text", name: "platzhalter_text", widget: "string", default: "[ BILD-PLATZHALTER ]" }
