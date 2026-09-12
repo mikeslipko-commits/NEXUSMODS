@@ -219,3 +219,54 @@ document.addEventListener("DOMContentLoaded", () => {
 
         if (!linkKatalog || !catalogContent) return;
 
+                function wechsleAnsicht(ansicht) {
+            aktuelleAnsicht = ansicht;
+            [linkKatalog, linkNeuheiten, linkSupport].forEach(link => {
+                if(link) link.classList.remove('active');
+            });
+            if (ansicht === 'katalog') {
+                if(linkKatalog) linkKatalog.classList.add('active');
+                catalogContent.style.display = 'block';
+                if(supportContent) supportContent.style.display = 'none';
+                if(sidebar) sidebar.style.display = 'block';
+                if(searchWrapper) {
+                    searchWrapper.style.opacity = '1';
+                    searchWrapper.style.pointerEvents = 'auto';
+                }
+                const filterButtons = document.querySelectorAll('[data-kategorie]');
+                filterButtons.forEach(btn => btn.classList.remove('active'));
+                const alleBtn = document.querySelector('[data-kategorie="alle"]');
+                if(alleBtn) alleBtn.classList.add('active');
+                aktuelleKategorie = 'alle';
+                rendereProdukte(alleProdukte);
+            } 
+            else if (ansicht === 'neuheiten') {
+                if(linkNeuheiten) linkNeuheiten.classList.add('active');
+                catalogContent.style.display = 'block';
+                if(supportContent) supportContent.style.display = 'none';
+                if(sidebar) sidebar.style.display = 'none'; 
+                if(searchWrapper) {
+                    searchWrapper.style.opacity = '0'; 
+                    searchWrapper.style.pointerEvents = 'none';
+                }
+                const neuesteDrei = alleProdukte.slice(-3).reverse();
+                rendereProdukte(neuesteDrei);
+            } 
+            else if (ansicht === 'support') {
+                if(linkSupport) linkSupport.classList.add('active');
+                catalogContent.style.display = 'none';
+                if(supportContent) supportContent.style.display = 'block';
+                if(sidebar) sidebar.style.display = 'none';
+                if(searchWrapper) {
+                    searchWrapper.style.opacity = '0';
+                    searchWrapper.style.pointerEvents = 'none';
+                }
+            }
+        }
+        linkKatalog.addEventListener('click', (e) => { e.preventDefault(); wechsleAnsicht('katalog'); });
+        linkNeuheiten.addEventListener('click', (e) => { e.preventDefault(); wechsleAnsicht('neuheiten'); });
+        linkSupport.addEventListener('click', (e) => { e.preventDefault(); wechsleAnsicht('support'); });
+    }
+});
+
+
