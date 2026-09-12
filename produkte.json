@@ -31,5 +31,22 @@
   "passwort": "discord.gg/tekknine",
   "youtube_link": "",
   "sound_datei": ""
+},
+  {
+  "kategorie": "skin",
+  "kategorie_klasse": "tag-skin",
+  "kategorie_text": "Waffenskin",
+  "typ_badge": "Gunpack",
+  "titel": "Black Purple Outline Glock ",
+  "beschreibung": "Black Purple Outline Glock ",
+  "preis": "0,00 €",
+  "alter_preis": "",
+  "free_tag": "Kostenloser Download",
+  "bild": "bilder/Untitled.png",
+  "platzhalter_text": "[ BILD-PLATZHALTER: SKIN ]",
+  "download_link": "https://drive.google.com/file/d/1y-8AQTjvYEGysXiNq6jSr-bVyRFoa70v/view?usp=sharing",
+  "passwort": "discord.gg/tekknine",
+  "youtube_link": "",
+  "sound_datei": ""
 }
 ]
