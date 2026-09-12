@@ -14,5 +14,22 @@
   "download_link": "https://link-target.net/1196001/black-and-white-gunpack",
   "passwort": "",
   "youtube_link": ""
+},
+  {
+  "kategorie": "sound",
+  "kategorie_klasse": "tag-sound",
+  "kategorie_text": "Waffensounds",
+  "typ_badge": "test",
+  "titel": "Test",
+  "beschreibung": "test",
+  "preis": "0,00 €",
+  "alter_preis": "",
+  "free_tag": "Kostenloser Download",
+  "bild": "",
+  "platzhalter_text": "[ BILD-PLATZHALTER: SOUND ]",
+  "download_link": "https://discord.gg/xumarimodz",
+  "passwort": "",
+  "youtube_link": "",
+  "sound_datei": "sounds/Marsupilami_Modz_50.wav"
 }
 ]
