@@ -1,18 +1,18 @@
 [
   {
-  "kategorie": "Haut",
-  „kategorie_klasse“: „tag-skin“,
-  "kategorie_text": "Waffenleder",
+  "kategorie": "skin",
+  "kategorie_klasse": "tag-skin",
+  "kategorie_text": "Waffenskin",
   "typ_badge": "Waffen Aussehen",
-  "Titel": "Micky Mods Black and White Gunpack",
-  „beschreibung“: „Micky Mods Black and White Gunpack“,
-  "Preis": "0,00 €",
+  "titel": "Micky Mods Black and White Gunpack",
+  "beschreibung": "Micky Mods Black and White Gunpack",
+  "preis": "0,00 €",
   "alter_preis": "",
-  „free_tag“: „Kostenloser Download“,
+  "free_tag": "Kostenloser Download",
   "bild": "bilder/marsupilami.png",
   "platzhalter_text": "[ BILD-PLATZHALTER: SKIN ]",
   "download_link": "https://link-target.net/1196001/black-and-white-gunpack",
-  "Passwort": "",
+  "passwort": "",
   "youtube_link": ""
 }
 ]
