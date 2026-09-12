@@ -52,7 +52,7 @@ document.addEventListener("DOMContentLoaded", () => {
         produkte.forEach((item) => {
             let mediaInhalt = '';
             if (item.bild) {
-                mediaInhalt = `<img src="${item.bild}" alt="${item.titel}" class="card-media-image">`;
+                mediaInhalt = `<img src="https://github.io{item.bild}" alt="${item.titel}" class="card-media-image">`;
             } else {
                 mediaInhalt = `<span class="card-media-label">${item.platzhalter_text || '[ BILD ]'}</span>`;
             }
