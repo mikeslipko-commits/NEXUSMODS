@@ -24,5 +24,21 @@
     "free_tag": "Kostenloser Download",
     "bild": "marsupilami.png",
     "platzhalter_text": "[ BILD-PLATZHALTER: SKIN ]"
-  }
+  },
+  { 
+  "kategorie": "redux", 
+  "kategorie_klasse": "tag-redux", 
+  "kategorie_text": "Grafik-Mod", 
+  "typ_badge": "test", 
+  "titel": "Test", 
+  "beschreibung": "lalalalalala", 
+  "preis": "0,00 €", 
+  "alter_preis": "", 
+  "free_tag": "Kostenloser Download", 
+  "bild": "", 
+  "platzhalter_text": "[ BILD-PLATZHALTER: REDUX ]“, 
+  „download_link“: „https://discord.gg/3eJj2wNe4“, 
+  „passwort“: „“, 
+  „youtube_link“: „https://discord.gg/3eJj2wNe4“ 
+}
 ]
