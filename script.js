@@ -1,6 +1,8 @@
 document.addEventListener("DOMContentLoaded", () => {
     let alleProdukte = [];
     let aktuelleKategorie = 'alle';
+    let aktuellesAudio = null; // Speichert den aktuell spielenden Sound
+    let aktuellerPlayBtn = null; // Speichert den aktiven Button
 
     // 1. Daten aus der JSON-Datei laden
     fetch(`produkte.json?v=${new Date().getTime()}`)
@@ -13,11 +15,17 @@ document.addEventListener("DOMContentLoaded", () => {
         })
         .catch(error => console.error("Fehler beim Laden der Produkte:", error));
 
-    // 2. Funktion, die das HTML mit den neuen Elementen baut
+    // 2. Funktion, die das HTML baut
     function rendereProdukte(produkte) {
         const container = document.getElementById('produkt-container');
         if (!container) return;
         
+        // Laufendes Audio stoppen, wenn die Ansicht neu gerendert wird
+        if (aktuellesAudio) {
+            aktuellesAudio.pause();
+            aktuellesAudio = null;
+        }
+
         container.innerHTML = '';
 
         const anzahlSpan = document.getElementById('produkt-anzahl');
@@ -25,7 +33,7 @@ document.addEventListener("DOMContentLoaded", () => {
             anzahlSpan.innerHTML = `Zeige <span>${produkte.length} exklusive${produkte.length === 1 ? 'r' : ''} Artikel</span>`;
         }
 
-        produkte.forEach(item => {
+        produkte.forEach((item, index) => {
             let mediaInhalt = '';
             if (item.bild) {
                 mediaInhalt = `<img src="${item.bild}" alt="${item.titel}" class="card-media-image">`;
@@ -33,9 +41,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 mediaInhalt = `<span class="card-media-label">${item.platzhalter_text}</span>`;
             }
 
-            // DYNAMISCHE ZUSÄTZE FÜR DIE NEUEN FUNKTIONEN:
-            
-            // A) Passwort-Bereich (Wird nur angezeigt, wenn ein Passwort existiert)
+            // Passwort-Bereich
             let passwortHTML = '';
             if (item.passwort && item.passwort.trim() !== "") {
                 passwortHTML = `
@@ -46,7 +52,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 `;
             }
 
-            // B) YouTube-Button (Wird nur angezeigt, wenn ein YouTube-Link existiert)
+            // YouTube-Button
             let youtubeHTML = '';
             if (item.youtube_link && item.youtube_link.trim() !== "") {
                 youtubeHTML = `
@@ -56,7 +62,16 @@ document.addEventListener("DOMContentLoaded", () => {
                 `;
             }
 
-            // Das fertige HTML-Template für die Karte
+            // NEU: Audio-Player Button (Erscheint nur, wenn eine Sound-Datei hinterlegt ist)
+            let audioHTML = '';
+            if (item.sound_datei && item.sound_datei.trim() !== "") {
+                audioHTML = `
+                    <button class="btn-audio-player" data-sound="${item.sound_datei}">
+                        <span>▶</span> Sound abspielen
+                    </button>
+                `;
+            }
+
             const produktHTML = `
                 <div class="product-card">
                     <div>
@@ -79,16 +94,77 @@ document.addEventListener("DOMContentLoaded", () => {
                             <span class="free-tag">${item.free_tag}</span>
                         </div>
                         
-                        <!-- Hier werden Passwort und YouTube dynamisch geladen -->
+                        <!-- Audio-Player Steuerung -->
+                        ${audioHTML}
+                        
                         ${passwortHTML}
                         ${youtubeHTML}
                         
-                        <!-- Download-Button leitet nun direkt auf den eingetragenen Link weiter -->
                         <a href="${item.download_link || '#'}" target="_blank" class="btn-action">Details & Download</a>
                     </div>
                 </div>
             `;
             container.innerHTML += produktHTML;
+        });
+
+        // Event Listener für die Sound-Buttons aktivieren
+        setupAudioEvents();
+    }
+
+    // NEU: Audio Event Logik
+    function setupAudioEvents() {
+        const audioButtons = document.querySelectorAll('.btn-audio-player');
+        
+        audioButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                const soundPath = button.getAttribute('data-sound');
+                const textSpan = button.querySelector('span');
+
+                // 1. Fall: Klick auf den bereits laufenden Sound -> Pause
+                if (aktuellesAudio && aktuellerPlayBtn === button) {
+                    if (!aktuellesAudio.paused) {
+                        aktuellesAudio.pause();
+                        button.classList.remove('playing');
+                        button.innerHTML = '<span>▶</span> Sound abspielen';
+                    } else {
+                        aktuellesAudio.play();
+                        button.classList.add('playing');
+                        button.innerHTML = '<span>⏸</span> Sound pausieren';
+                    }
+                    return;
+                }
+
+                // 2. Fall: Ein anderer Sound lief vorher -> Alten Sound stoppen und Button zurücksetzen
+                if (aktuellesAudio) {
+                    aktuellesAudio.pause();
+                    if (aktuellerPlayBtn) {
+                        aktuellerPlayBtn.classList.remove('playing');
+                        aktuellerPlayBtn.innerHTML = '<span>▶</span> Sound abspielen';
+                    }
+                }
+
+                // 3. Neuen Sound laden und abspielen
+                aktuellesAudio = new Audio(soundPath);
+                aktuellerPlayBtn = button;
+
+                button.classList.add('playing');
+                button.innerHTML = '<span>⏸</span> Sound pausieren';
+
+                aktuellesAudio.play().catch(err => {
+                    console.error("Audio-Wiedergabe blockiert:", err);
+                    alert("Sound-Datei konnte nicht geladen werden. Prüfe, ob die Datei im Ordner 'sounds' liegt!");
+                    button.classList.remove('playing');
+                    button.innerHTML = '<span>▶</span> Sound abspielen';
+                });
+
+                // Wenn der Sound vorbei ist, Button wieder zurücksetzen
+                aktuellesAudio.addEventListener('ended', () => {
+                    button.classList.remove('playing');
+                    button.innerHTML = '<span>▶</span> Sound abspielen';
+                    aktuellesAudio = null;
+                    aktuellerPlayBtn = null;
+                });
+            });
         });
     }
 
