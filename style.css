@@ -382,3 +382,35 @@ body {
 .footer-container { max-width: 1280px; margin: 0 auto; }
 .footer-title { font-weight: 700; color: #9ca3af; font-size: 14px; margin-bottom: 8px; }
 .footer-disclaimer { max-width: 576px; margin: 0 auto; line-height: 1.6; }
+
+/* --- AUDIO PLAYER BUTTON --- */
+.btn-audio-player {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    width: 100%;
+    background-color: rgba(52, 211, 153, 0.06);
+    color: #34d399;
+    font-size: 13px;
+    font-weight: 600;
+    padding: 10px 16px;
+    border-radius: 8px;
+    border: 1px dashed rgba(52, 211, 153, 0.3);
+    cursor: pointer;
+    margin-bottom: 12px;
+    transition: all 0.2s ease;
+}
+
+.btn-audio-player:hover {
+    background-color: rgba(52, 211, 153, 0.12);
+    border-color: #34d399;
+}
+
+/* Wenn der Sound gerade aktiv spielt */
+.btn-audio-player.playing {
+    background-color: #34d399 !important;
+    color: #000000 !important;
+    border-style: solid;
+    box-shadow: 0 0 15px rgba(52, 211, 153, 0.4);
+}
