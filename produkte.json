@@ -26,16 +26,3 @@
     "platzhalter_text": "[ BILD-PLATZHALTER: SKIN ]"
   }
 ]
-{ 
-  "kategorie": "redux", 
-  "kategorie_klasse": "tag-redux", 
-  "kategorie_text": "Grafik-Mod", 
-  "typ_badge": "test", 
-  "titel": "Test", 
-  "beschreibung": "wir testen nur", 
-  "preis": "0,00 €", 
-  "alter_preis": "", 
-  "free_tag": "Kostenloser Download", 
-  "bild": "", 
-  "platzhalter_text": "[ BILD-PLATZHALTER: REDUX ]" 
-}
