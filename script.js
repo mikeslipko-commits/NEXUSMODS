@@ -1,8 +1,8 @@
 document.addEventListener("DOMContentLoaded", () => {
     let alleProdukte = [];
     let aktuelleKategorie = 'alle';
-    let aktuellesAudio = null; // Speichert den aktuell spielenden Sound
-    let aktuellerPlayBtn = null; // Speichert den aktiven Button
+    let aktuellesAudio = null;
+    let aktuellerPlayBtn = null;
     let aktuelleAnsicht = 'katalog'; // Kann 'katalog', 'neuheiten' oder 'support' sein
 
     // 1. Daten aus der JSON-Datei laden
@@ -15,7 +15,11 @@ document.addEventListener("DOMContentLoaded", () => {
             setupSuche();
             setupHeaderNav(); // Aktiviert die Neuheiten- und Support-Knöpfe im Header
         })
-        .catch(error => console.error("Fehler beim Laden der Produkte:", error));
+        .catch(error => {
+            console.error("Fehler beim Laden der Produkte:", error);
+            const container = document.getElementById('produkt-container');
+            if (container) container.innerHTML = '<p style="color: #ef4444; text-align:center;">Fehler beim Laden der produkte.json. Bitte überprüfe das Dateiformat.</p>';
+        });
 
     // 2. Funktion, die das HTML baut
     function rendereProdukte(produkte) {
@@ -39,12 +43,17 @@ document.addEventListener("DOMContentLoaded", () => {
             anzahlSpan.innerHTML = labelText;
         }
 
-        produkte.forEach((item, index) => {
+        if (produkte.length === 0) {
+            container.innerHTML = '<p style="color: #9ca3af; text-align:center; grid-column: 1/-1; padding: 40px 0;">Keine Produkte in dieser Kategorie gefunden.</p>';
+            return;
+        }
+
+        produkte.forEach((item) => {
             let mediaInhalt = '';
             if (item.bild) {
                 mediaInhalt = `<img src="${item.bild}" alt="${item.titel}" class="card-media-image">`;
             } else {
-                mediaInhalt = `<span class="card-media-label">${item.platzhalter_text}</span>`;
+                mediaInhalt = `<span class="card-media-label">${item.platzhalter_text || '[ BILD ]'}</span>`;
             }
 
             // Passwort-Bereich
@@ -83,29 +92,25 @@ document.addEventListener("DOMContentLoaded", () => {
                     <div>
                         <div class="card-media">
                             ${mediaInhalt}
-                            <div class="category-tag ${item.kategorie_klasse}">${item.kategorie_text}</div>
-                            <div class="type-badge">${item.typ_badge}</div>
+                            <div class="category-tag ${item.kategorie_klasse || ''}">${item.kategorie_text || ''}</div>
+                            <div class="type-badge">${item.typ_badge || ''}</div>
                         </div>
                         <div class="card-body">
-                            <h4 class="product-title">${item.titel}</h4>
-                            <p class="product-desc">${item.beschreibung}</p>
+                            <h4 class="product-title">${item.titel || ''}</h4>
+                            <p class="product-desc">${item.beschreibung || ''}</p>
                         </div>
                     </div>
                     <div class="card-footer">
                         <div class="price-row">
                             <div class="price-box">
-                                <span class="current-price">${item.preis}</span>
-                                <span class="old-price">${item.alter_preis}</span>
+                                <span class="current-price">${item.preis || '0,00 €'}</span>
+                                <span class="old-price">${item.alter_preis || ''}</span>
                             </div>
-                            <span class="free-tag">${item.free_tag}</span>
+                            <span class="free-tag">${item.free_tag || 'Kostenloser Download'}</span>
                         </div>
-                        
-                        <!-- Audio-Player Steuerung -->
                         ${audioHTML}
-                        
                         ${passwortHTML}
                         ${youtubeHTML}
-                        
                         <a href="${item.download_link || '#'}" target="_blank" class="btn-action">Details & Download</a>
                     </div>
                 </div>
@@ -117,54 +122,42 @@ document.addEventListener("DOMContentLoaded", () => {
         setupAudioEvents();
     }
 
-    // Audio Event Logik
+    // Audio Steuerungs-Logik
     function setupAudioEvents() {
         const audioButtons = document.querySelectorAll('.btn-audio-player');
-        
         audioButtons.forEach(button => {
             button.addEventListener('click', () => {
                 const soundPath = button.getAttribute('data-sound');
-
-                // 1. Fall: Klick auf den bereits laufenden Sound -> Pause
                 if (aktuellesAudio && aktuellerPlayBtn === button) {
                     if (!aktuellesAudio.paused) {
                         aktuellesAudio.pause();
-                        button.classList.remove('playing');
                         button.innerHTML = '<span>▶</span> Sound abspielen';
+                        button.classList.remove('playing');
                     } else {
                         aktuellesAudio.play();
-                        button.classList.add('playing');
                         button.innerHTML = '<span>⏸</span> Sound pausieren';
+                        button.classList.add('playing');
                     }
                     return;
                 }
-
-                // 2. Fall: Ein anderer Sound lief vorher -> Alten Sound stoppen und Button zurücksetzen
                 if (aktuellesAudio) {
                     aktuellesAudio.pause();
                     if (aktuellerPlayBtn) {
-                        aktuellerPlayBtn.classList.remove('playing');
                         aktuellerPlayBtn.innerHTML = '<span>▶</span> Sound abspielen';
+                        aktuellerPlayBtn.classList.remove('playing');
                     }
                 }
-
-                // 3. Neuen Sound laden und abspielen
                 aktuellesAudio = new Audio(soundPath);
                 aktuellerPlayBtn = button;
-
-                button.classList.add('playing');
                 button.innerHTML = '<span>⏸</span> Sound pausieren';
-
+                button.classList.add('playing');
                 aktuellesAudio.play().catch(err => {
-                    console.error("Audio-Wiedergabe blockiert:", err);
-                    button.classList.remove('playing');
                     button.innerHTML = '<span>▶</span> Sound abspielen';
+                    button.classList.remove('playing');
                 });
-
-                // Wenn der Sound vorbei ist, Button wieder zurücksetzen
                 aktuellesAudio.addEventListener('ended', () => {
-                    button.classList.remove('playing');
                     button.innerHTML = '<span>▶</span> Sound abspielen';
+                    button.classList.remove('playing');
                     aktuellesAudio = null;
                     aktuellerPlayBtn = null;
                 });
@@ -210,8 +203,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
             if (suchBegriff !== '') {
                 ergebnis = ergebnis.filter(p => {
-                    const titelPasst = p.titel.toLowerCase().includes(suchBegriff);
-                    const beschreibungPasst = p.beschreibung.toLowerCase().includes(suchBegriff);
+                    const titelPasst = p.titel ? p.titel.toLowerCase().includes(suchBegriff) : false;
+                    const beschreibungPasst = p.beschreibung ? p.beschreibung.toLowerCase().includes(suchBegriff) : false;
                     return titelPasst || beschreibungPasst;
                 });
             }
@@ -226,4 +219,3 @@ document.addEventListener("DOMContentLoaded", () => {
         const linkNeuheiten = document.getElementById('nav-neuheiten');
         const linkSupport = document.getElementById('nav-support');
         
-        const catalogContent = document.getElementById('catalog-main-content');
