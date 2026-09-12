@@ -65,5 +65,22 @@
   "passwort": "discord.gg/tekknine",
   "youtube_link": "",
   "sound_datei": ""
+},
+  {
+  "kategorie": "redux",
+  "kategorie_klasse": "tag-redux",
+  "kategorie_text": "Grafik-Mod",
+  "typ_badge": "Redux",
+  "titel": "Fps Boost Black V1 Redux by Artist Mods",
+  "beschreibung": "・Legal for EN Servers \n・New House fixed\n・Big Fps Boost\n・0 Delay \n・Custom Minimap\n・Custom Sky\n・Custom Blue Hiteffect\n・Custom Time cycle",
+  "preis": "0,00 €",
+  "alter_preis": "",
+  "free_tag": "Kostenloser Download",
+  "bild": "bilder/maxresdefault.jpg",
+  "platzhalter_text": "[ BILD-PLATZHALTER: REDUX ]",
+  "download_link": "https://drive.google.com/file/d/1-berJL-uEpuNOOmDoqtfwZjMZMoGcHls/view?usp=sharing",
+  "passwort": "",
+  "youtube_link": "https://youtu.be/IaCgacu3do4?si=0SXKJDWSsezZgfy7",
+  "sound_datei": ""
 }
 ]
