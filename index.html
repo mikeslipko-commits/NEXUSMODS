@@ -22,21 +22,21 @@
     <header class="store-header">
         <div class="header-container">
             <!-- Logo -->
-            <div class="logo">
+            <div class="logo" style="cursor:pointer;" onclick="location.reload();">
                 NEXUSMODS<span class="logo-accent">/fivem</span>
             </div>
             
-            <!-- Suchleiste mit funktionierender ID -->
-            <div class="search-wrapper">
+            <!-- Suchleiste mit neuer ID, damit das Skript sie bei Support ausblenden kann -->
+            <div class="search-wrapper" id="main-search-wrapper">
                 <input type="text" id="search-input" placeholder="Nach Skins, Sounds oder Packs suchen..." class="search-input">
                 <span class="search-icon">🔍</span>
             </div>
 
-            <!-- Navigation & Status -->
+            <!-- Navigation & Status (JETZT MIT HELDEN-IDs VERKNÜPFT) -->
             <nav class="store-nav">
-                <a href="#" class="nav-link active">Katalog</a>
-                <a href="#" class="nav-link">Neuheiten</a>
-                <a href="#" class="nav-link">Support</a>
+                <a href="#" id="nav-katalog" class="nav-link active">Katalog</a>
+                <a href="#" id="nav-neuheiten" class="nav-link">Neuheiten</a>
+                <a href="#" id="nav-support" class="nav-link">Support</a>
                 <div class="sale-badge">⚡ 0,00 € SALE</div>
             </nav>
         </div>
@@ -45,8 +45,8 @@
     <!-- KATALOG CONTENT WRAPPER -->
     <div class="store-wrapper">
         
-        <!-- SIDEBAR: FILTER -->
-        <aside class="store-sidebar">
+        <!-- SIDEBAR: FILTER (MIT ID ZUM STEUERN) -->
+        <aside class="store-sidebar" id="store-sidebar">
             <div class="filter-box">
                 <h3 class="filter-title">Filter nach:</h3>
                 <div class="filter-menu">
@@ -58,8 +58,8 @@
             </div>
         </aside>
 
-        <!-- PRODUKT LISTE -->
-        <main class="catalog-content">
+        <!-- PRODUKT LISTE (KATALOG & NEUHEITEN BEREICH) -->
+        <main class="catalog-content" id="catalog-main-content">
             
             <!-- Status Leiste -->
             <div class="status-bar">
@@ -72,6 +72,31 @@
             <!-- PRODUKT GRID -->
             <div id="produkt-container" class="product-grid">
                 <!-- Die Produkte werden hier automatisch per JavaScript geladen -->
+            </div>
+        </main>
+
+        <!-- NEU: DEIN EINGEBETTETER SUPPORT BEREICH (Standardmäßig unsichtbar) -->
+        <main class="catalog-content" id="support-main-content" style="display: none; width: 100%;">
+            <div style="background-color: #161920; border: 1px solid rgba(34, 37, 45, 0.8); border-radius: 12px; padding: 40px; box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);">
+                <h2 style="color: #fff; margin-top: 0; margin-bottom: 8px; font-size: 28px;">Brauchst du Hilfe? 🛠️</h2>
+                <p style="color: #9ca3af; font-size: 15px; margin-bottom: 32px; line-height: 1.6;">Hast du Probleme bei der Installation oder Fragen zu unseren Modifikationen? Unser Support-Team hilft dir gerne weiter.</p>
+                
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 24px;">
+                    <!-- Discord Card -->
+                    <div style="background: rgba(79, 70, 229, 0.05); border: 1px solid rgba(79, 70, 229, 0.2); padding: 24px; border-radius: 8px; display: flex; flex-direction: column; justify-content: space-between;">
+                        <div>
+                            <h4 style="color: #ffffff; margin-top: 0; margin-bottom: 8px; font-size: 18px;">Tritt unserem Discord bei</h4>
+                            <p style="color: #9ca3af; font-size: 13px; line-height: 1.5; margin-bottom: 20px;">Eröffne ein Support-Ticket. Unsere Community und Admins sind rund um die Uhr für dich da.</p>
+                        </div>
+                        <a href="https://discord.gg" target="_blank" class="btn-action" style="background-color: #4f46e5; border-color: #4f46e5; color: #fff;">Discord Server beitreten</a>
+                    </div>
+                    <!-- FAQ Card -->
+                    <div style="background: rgba(6, 182, 212, 0.05); border: 1px solid rgba(6, 182, 212, 0.2); padding: 24px; border-radius: 8px;">
+                        <h4 style="color: #ffffff; margin-top: 0; margin-bottom: 8px; font-size: 18px;">Schnellanleitung</h4>
+                        <p style="color: #9ca3af; font-size: 13px; line-height: 1.5; margin-bottom: 20px;">Alle Downloads sind als .zip gepackt. Einfach entpacken und in deinen FiveM-Application-Data Ordner verschieben.</p>
+                        <span style="color: #06b6d4; font-size: 13px; font-weight: bold;">Keine Registrierung nötig!</span>
+                    </div>
+                </div>
             </div>
         </main>
 
