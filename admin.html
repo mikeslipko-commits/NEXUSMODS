@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NEXUSMODS – Sicheres Admin Panel</title>
+    <title>NEXUSMODS – Admin Panel</title>
     <link rel="preconnect" href="https://googleapis.com">
     <link rel="preconnect" href="https://gstatic.com" crossorigin>
     <link href="https://googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
@@ -33,14 +33,10 @@
             border: none; padding: 14px; border-radius: 8px; cursor: pointer; font-size: 14px; transition: opacity 0.2s;
         }
         .btn-submit:hover { opacity: 0.9; }
-        .status-message {
-            margin-top: 20px; padding: 12px; border-radius: 8px; text-align: center; font-size: 14px; display: none;
-        }
-        .status-success { background-color: rgba(52, 211, 153, 0.2); color: #34d399; border: 1px solid #34d399; }
-        .status-error { background-color: rgba(239, 68, 68, 0.2); color: #ef4444; border: 1px solid #ef4444; }
-        .token-alert {
-            background-color: rgba(217, 119, 6, 0.1); border: 1px solid #d97706; color: #fbbf24;
-            padding: 12px; border-radius: 8px; font-size: 13px; margin-bottom: 20px; line-height: 1.5;
+        .output-box { margin-top: 30px; display: none; }
+        .output-code {
+            background-color: #090b0f; padding: 15px; border-radius: 8px; border: 1px solid #22252d;
+            overflow-x: auto; white-space: pre-wrap; font-family: monospace; font-size: 13px; color: #34d399;
         }
     </style>
 </head>
@@ -48,28 +44,14 @@
 
     <header class="store-header">
         <div class="header-container">
-            <div class="logo">NEXUSMODS<span class="logo-accent">/secure admin</span></div>
+            <div class="logo">NEXUSMODS<span class="logo-accent">/admin panel</span></div>
             <a href="index.html" class="nav-link">← Zurück zum Shop</a>
         </div>
     </header>
 
     <div class="admin-box">
-        <h2 style="margin-top:0; color:#fff; margin-bottom: 12px;">Mod direkt live schalten</h2>
-        <p style="color: #9ca3af; font-size: 14px; margin-bottom: 24px;">Fülle die Felder aus, um eine neue Modifikation vollautomatisch zu deinem Shop hinzuzufügen.</p>
-        
-        <div class="token-alert">
-            🔒 <strong>Sicherheitshinweis:</strong> Dein GitHub-Token wird aus Sicherheitsgründen nicht mehr im Code gespeichert. Bitte füge es unten ein, um dich zu authentifizieren.
-        </div>
-
+        <h2 style="margin-top:0; color:#fff; margin-bottom: 24px;">Neue Modifikation eintragen</h2>
         <form id="modForm">
-            <!-- HIER IST DAS NEUE SICHERE PASSWORT-FELD -->
-            <div class="form-group">
-                <label style="color: #06b6d4;">Dein GitHub Personal Access Token</label>
-                <input type="password" id="github_token" placeholder="github_pat_..." required>
-            </div>
-
-            <hr style="border: 0; border-top: 1px solid rgba(34, 37, 45, 0.8); margin: 24px 0;">
-
             <div class="form-group">
                 <label>Titel der Mod</label>
                 <input type="text" id="titel" placeholder="z.B. Ultra Vision Redux v1.2" required>
@@ -91,42 +73,38 @@
                 <input type="text" id="typ_badge" placeholder="z.B. Visual Enhancements" required>
             </div>
             <div class="form-group">
-                <label>Alter Preis (optional)</label>
-                <input type="text" id="alter_preis" placeholder="z.B. 19,99 €">
+                <label>Alter Preis (optional, z.B. 19,99 €)</label>
+                <input type="text" id="alter_preis" placeholder="Leer lassen, wenn kein vorheriger Preis">
             </div>
             <div class="form-group">
-                <label>Bild-Dateiname (in 'bilder/')</label>
-                <input type="text" id="bild" placeholder="z.B. redux.jpg (leer lassen für Platzhalter)">
+                <label>Bild-Dateiname (liegt im Ordner 'bilder')</label>
+                <input type="text" id="bild" placeholder="z.B. mein-skin.jpg (leer lassen für Platzhalter)">
             </div>
 
-            <button type="submit" class="btn-submit" id="submitBtn">Modifikation veröffentlichen</button>
+            <button type="submit" class="btn-submit">JSON-Code erzeugen</button>
         </form>
 
-        <div id="statusMessage" class="status-message"></div>
+        <div class="output-box" id="outputBox">
+            <h3 style="color:#fff; font-size:14px; margin-bottom: 10px;">📋 Kopiere diesen Block:</h3>
+            <div class="output-code" id="outputCode"></div>
+            <p style="font-size:13px; color:#9ca3af; margin-top:15px; line-height: 1.5;">
+                💡 <strong>Letzter Schritt:</strong> Öffne deine <code>produkte.json</code> auf GitHub, klicke auf Bearbeiten, füge diesen Block als neues Element in die Liste ein und klicke auf Speichern. Fertig!
+            </p>
+        </div>
     </div>
 
     <script>
-        const GITHUB_USER = "mikeslipko-commits"; 
-        const GITHUB_REPO = "NEXUSMODS";
-
-        document.getElementById('modForm').addEventListener('submit', async function(e) {
+        document.getElementById('modForm').addEventListener('submit', function(e) {
             e.preventDefault();
-            const submitBtn = document.getElementById('submitBtn');
-            const statusMsg = document.getElementById('statusMessage');
             
-            // Holt das Token live aus dem Eingabefeld
-            const GITHUB_TOKEN = document.getElementById('github_token').value.trim();
-
-            submitBtn.disabled = true;
-            submitBtn.innerText = "Wird übertragen...";
-            statusMsg.style.display = "none";
-
             const kategorie = document.getElementById('kategorie').value;
             let katText = 'Grafik-Mod', katKlasse = 'tag-redux';
+            
             if(kategorie === 'skin') { katText = 'Waffenskin'; katKlasse = 'tag-skin'; }
             if(kategorie === 'sound') { katText = 'Waffensounds'; katKlasse = 'tag-sound'; }
 
             const bildName = document.getElementById('bild').value.trim();
+
             const neuesProdukt = {
                 kategorie: kategorie,
                 kategorie_klasse: katKlasse,
@@ -141,56 +119,13 @@
                 platzhalter_text: `[ BILD-PLATZHALTER: ${kategorie.toUpperCase()} ]`
             };
 
-            const url = `https://github.com{GITHUB_USER}/${GITHUB_REPO}/contents/produkte.json`;
-
-            try {
-                const response = await fetch(url, {
-                    headers: { "Authorization": `token ${GITHUB_TOKEN}` }
-                });
-                
-                if (!response.ok) throw new Error("Verbindung fehlgeschlagen. Ist das GitHub-Token korrekt?");
-                const fileData = await response.json();
-                
-                const aktuellerInhalt = JSON.parse(atob(fileData.content));
-                aktuellerInhalt.push(neuesProdukt);
-                
-                const neuerInhaltBase64 = btoa(unescape(encodeURIComponent(JSON.stringify(aktuellerInhalt, null, 2))));
-
-                const updateResponse = await fetch(url, {
-                    method: "PUT",
-                    headers: {
-                        "Authorization": `token ${GITHUB_TOKEN}`,
-                        "Content-Type": "application/json"
-                    },
-                    body: JSON.stringify({
-                        message: `System: Neue Mod hinzugefügt (${neuesProdukt.titel})`,
-                        content: neuerInhaltBase64,
-                        sha: fileData.sha
-                    })
-                });
-
-                if (updateResponse.ok) {
-                    statusMsg.className = "status-message status-success";
-                    statusMsg.innerText = "🚀 Erfolgreich veröffentlicht! In ca. 60 Sekunden ist die Mod live im Shop.";
-                    
-                    // Formular zurücksetzen, aber das Token für weitere Einträge stehen lassen
-                    document.getElementById('titel').value = '';
-                    document.getElementById('beschreibung').value = '';
-                    document.getElementById('typ_badge').value = '';
-                    document.getElementById('alter_preis').value = '';
-                    document.getElementById('bild').value = '';
-                } else {
-                    throw new Error("Fehler beim Hochladen auf GitHub. Bitte Berechtigungen prüfen.");
-                }
-
-            } catch (error) {
-                statusMsg.className = "status-message status-error";
-                statusMsg.innerText = "❌ Fehler: " + error.message;
-            } finally {
-                statusMsg.style.display = "block";
-                submitBtn.disabled = false;
-                submitBtn.innerText = "Modifikation veröffentlichen";
-            }
+            const outputCode = document.getElementById('outputCode');
+            // Erzeugt perfekt formatierten Code für deine JSON-Datei
+            outputCode.innerText = JSON.stringify(neuesProdukt, null, 2);
+            document.getElementById('outputBox').style.display = 'block';
+            
+            // Scrollt automatisch zum Ergebnis
+            document.getElementById('outputBox').scrollIntoView({ behavior: 'smooth' });
         });
     </script>
 </body>
