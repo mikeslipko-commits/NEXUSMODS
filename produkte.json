@@ -1,21 +1,5 @@
 [
   {
-    "kategorie": "redux",
-    "kategorie_klasse": "tag-redux",
-    "kategorie_text": "Grafik-Mod",
-    "typ_badge": "Visual Enhancements",
-    "titel": "Ultra Vision Redux v1.2",
-    "beschreibung": "Komplette Überarbeitung der Grafik. Realistische Straßen, schärfere Schatten und verbesserte Nachtbeleuchtung bei stabilen FPS.",
-    "preis": "0,00 €",
-    "alter_preis": "39,99 €",
-    "free_tag": "Kostenloser Download",
-    "bild": "bilder/redux.jpg",
-    "platzhalter_text": "[ BILD-PLATZHALTER: REDUX ]",
-    "download_link": "https://link-target.net",
-    "passwort": "",
-    "youtube_link": ""
-  },
-  {
     "kategorie": "skin",
     "kategorie_klasse": "tag-skin",
     "kategorie_text": "Waffenskin",
@@ -30,5 +14,22 @@
     "download_link": "https://link-target.net",
     "passwort": "",
     "youtube_link": ""
-  }
+  },
+  {
+  "kategorie": "skin",
+  "kategorie_klasse": "tag-skin",
+  "kategorie_text": "Waffenskin",
+  "typ_badge": "Gunpack",
+  "titel": "Oni USP",
+  "beschreibung": "Oni USP",
+  "preis": "0,00 €",
+  "alter_preis": "",
+  "free_tag": "Kostenloser Download",
+  "bild": "bilder/ONI_Revo_Preview.png",
+  "platzhalter_text": "[ BILD-PLATZHALTER: SKIN ]",
+  "download_link": "https://drive.google.com/file/d/19kz-sQQidXa78w11AXhr_CYU9U6cy9u-/view?usp=sharing",
+  "passwort": "discord.gg/tekknine",
+  "youtube_link": "",
+  "sound_datei": ""
+}
 ]
