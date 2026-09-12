@@ -73,12 +73,26 @@
                 <input type="text" id="typ_badge" placeholder="z.B. Visual Enhancements" required>
             </div>
             <div class="form-group">
-                <label>Alter Preis (optional, z.B. 19,99 €)</label>
-                <input type="text" id="alter_preis" placeholder="Leer lassen, wenn kein vorheriger Preis">
+                <label>Alter Preis (optional)</label>
+                <input type="text" id="alter_preis" placeholder="z.B. 19,99 €">
             </div>
             <div class="form-group">
                 <label>Bild-Dateiname (liegt im Ordner 'bilder')</label>
-                <input type="text" id="bild" placeholder="z.B. mein-skin.jpg (leer lassen für Platzhalter)">
+                <input type="text" id="bild" placeholder="z.B. mein-skin.jpg">
+            </div>
+
+            <!-- NEUE FELDER HIER -->
+            <div class="form-group">
+                <label style="color: #06b6d4;">Download-Link (z.B. Mediafire, Mega...)</label>
+                <input type="url" id="download_link" placeholder="https://..." required>
+            </div>
+            <div class="form-group">
+                <label style="color: #06b6d4;">Archiv-Passwort (optional)</label>
+                <input type="text" id="passwort" placeholder="z.B. nexus123 (leer lassen wenn keins)">
+            </div>
+            <div class="form-group">
+                <label style="color: #06b6d4;">YouTube Preview-Link (optional)</label>
+                <input type="url" id="youtube_link" placeholder="https://youtube.com?...">
             </div>
 
             <button type="submit" class="btn-submit">JSON-Code erzeugen</button>
@@ -116,15 +130,16 @@
                 alter_preis: document.getElementById('alter_preis').value || "",
                 free_tag: "Kostenloser Download",
                 bild: bildName ? "bilder/" + bildName : "",
-                platzhalter_text: `[ BILD-PLATZHALTER: ${kategorie.toUpperCase()} ]`
+                platzhalter_text: `[ BILD-PLATZHALTER: ${kategorie.toUpperCase()} ]`,
+                // Neue Variablen werden hier ins JSON geschrieben:
+                download_link: document.getElementById('download_link').value,
+                passwort: document.getElementById('passwort').value || "",
+                youtube_link: document.getElementById('youtube_link').value || ""
             };
 
             const outputCode = document.getElementById('outputCode');
-            // Erzeugt perfekt formatierten Code für deine JSON-Datei
             outputCode.innerText = JSON.stringify(neuesProdukt, null, 2);
             document.getElementById('outputBox').style.display = 'block';
-            
-            // Scrollt automatisch zum Ergebnis
             document.getElementById('outputBox').scrollIntoView({ behavior: 'smooth' });
         });
     </script>
