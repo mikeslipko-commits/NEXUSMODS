@@ -3,9 +3,9 @@ document.addEventListener("DOMContentLoaded", () => {
     let aktuelleKategorie = 'alle';
     let aktuellesAudio = null;
     let aktuellerPlayBtn = null;
-    let aktuelleAnsicht = 'katalog';
+    let aktuelleAnsicht = 'katalog'; // Kann 'katalog', 'neuheiten' oder 'support' sein
 
-    // 1. Daten aus der JSON-Datei laden
+    // 1. Daten aus der JSON-Datei laden (mit Cache-Busting-Zeitstempel)
     fetch(`produkte.json?v=${new Date().getTime()}`)
         .then(response => response.json())
         .then(data => {
@@ -13,19 +13,22 @@ document.addEventListener("DOMContentLoaded", () => {
             rendereProdukte(alleProdukte);
             setupFilter();
             setupSuche();
-            setupHeaderNav(); 
+            setupHeaderNav(); // Aktiviert die Neuheiten- und Support-Knöpfe im Header
         })
         .catch(error => {
             console.error("Fehler beim Laden der Produkte:", error);
             const container = document.getElementById('produkt-container');
-            if (container) container.innerHTML = '<p style="color: #ef4444; text-align:center;">Fehler beim Laden der produkte.json.</p>';
+            if (container) {
+                container.innerHTML = '<p style="color: #ef4444; text-align:center;">Fehler beim Laden der produkte.json.</p>';
+            }
         });
 
-    // 2. Funktion, die das HTML baut
+    // 2. Funktion, die das HTML für die Produktkarten baut
     function rendereProdukte(produkte) {
         const container = document.getElementById('produkt-container');
         if (!container) return;
         
+        // Laufendes Audio stoppen, wenn die Ansicht neu geladen wird
         if (aktuellesAudio) {
             aktuellesAudio.pause();
             aktuellesAudio = null;
@@ -55,6 +58,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 mediaInhalt = `<span class="card-media-label">${item.platzhalter_text || '[ BILD ]'}</span>`;
             }
 
+            // Passwort-Bereich (wird nur erzeugt, wenn ein Passwort vorhanden ist)
             let passwortHTML = '';
             if (item.passwort && item.passwort.trim() !== "") {
                 passwortHTML = `
@@ -65,6 +69,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 `;
             }
 
+            // YouTube-Button (wird nur erzeugt, wenn ein Link vorhanden ist)
             let youtubeHTML = '';
             if (item.youtube_link && item.youtube_link.trim() !== "") {
                 youtubeHTML = `
@@ -74,6 +79,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 `;
             }
 
+            // Audio-Player Button (wird nur erzeugt, wenn eine Sounddatei hinterlegt ist)
             let audioHTML = '';
             if (item.sound_datei && item.sound_datei.trim() !== "") {
                 audioHTML = `
@@ -114,15 +120,18 @@ document.addEventListener("DOMContentLoaded", () => {
             container.innerHTML += produktHTML;
         });
 
+        // Klick-Events für Waffensounds aktivieren
         setupAudioEvents();
     }
 
-    // Audio-Logik
+    // 3. Waffensound Audio Event Logik (Globaler Manager)
     function setupAudioEvents() {
         const audioButtons = document.querySelectorAll('.btn-audio-player');
         audioButtons.forEach(button => {
             button.addEventListener('click', () => {
                 const soundPath = button.getAttribute('data-sound');
+                
+                // Fall A: Klick auf den bereits laufenden Sound -> Pause / Play wechseln
                 if (aktuellesAudio && aktuellerPlayBtn === button) {
                     if (!aktuellesAudio.paused) {
                         aktuellesAudio.pause();
@@ -135,6 +144,8 @@ document.addEventListener("DOMContentLoaded", () => {
                     }
                     return;
                 }
+
+                // Fall B: Ein anderer Sound lief vorher -> Alten Sound stoppen und Button zurücksetzen
                 if (aktuellesAudio) {
                     aktuellesAudio.pause();
                     if (aktuellerPlayBtn) {
@@ -142,14 +153,20 @@ document.addEventListener("DOMContentLoaded", () => {
                         aktuellerPlayBtn.classList.remove('playing');
                     }
                 }
+
+                // Fall C: Neuen Sound laden und starten
                 aktuellesAudio = new Audio(soundPath);
                 aktuellerPlayBtn = button;
                 button.innerHTML = '<span>⏸</span> Sound pausieren';
                 button.classList.add('playing');
+                
                 aktuellesAudio.play().catch(err => {
+                    console.error("Audio blockiert:", err);
                     button.innerHTML = '<span>▶</span> Sound abspielen';
                     button.classList.remove('playing');
                 });
+
+                // Wenn der Sound zu Ende gelaufen ist
                 aktuellesAudio.addEventListener('ended', () => {
                     button.innerHTML = '<span>▶</span> Sound abspielen';
                     button.classList.remove('playing');
@@ -160,7 +177,7 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 
-    // Sidebar Filter Logik
+    // 4. Logik für die Filter-Buttons in der linken Sidebar
     function setupFilter() {
         const buttons = document.querySelectorAll('[data-kategorie]');
         const searchInput = document.getElementById('search-input');
@@ -183,7 +200,7 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 
-    // Live Suche Logik
+    // 5. Logik für die Live-Suchleiste oben
     function setupSuche() {
         const searchInput = document.getElementById('search-input');
         if (!searchInput) return;
@@ -191,32 +208,10 @@ document.addEventListener("DOMContentLoaded", () => {
         searchInput.addEventListener('input', (e) => {
             const suchBegriff = e.target.value.toLowerCase().trim();
             let ergebnis = alleProdukte;
+            
             if (aktuelleKategorie !== 'alle') {
                 ergebnis = alleProdukte.filter(p => p.kategorie === aktuelleKategorie);
             }
+
             if (suchBegriff !== '') {
                 ergebnis = ergebnis.filter(p => {
-                    const titelPasst = p.titel ? p.titel.toLowerCase().includes(suchBegriff) : false;
-                    const beschreibungPasst = p.beschreibung ? p.beschreibung.toLowerCase().includes(suchBegriff) : false;
-                    return titelPasst || beschreibungPasst;
-                });
-            }
-            rendereProdukte(ergebnis);
-        });
-    }
-
-    // Header Navigation Logik
-    function setupHeaderNav() {
-        const linkKatalog = document.getElementById('nav-katalog');
-        const linkNeuheiten = document.getElementById('nav-neuheiten');
-        const linkSupport = document.getElementById('nav-support');
-        
-        const catalogContent = document.getElementById('catalog-main-content');
-        const supportContent = document.getElementById('support-main-content');
-        const sidebar = document.getElementById('store-sidebar');
-        const searchWrapper = document.getElementById('main-search-wrapper');
-
-        // Falls die neue HTML noch nicht aktiv ist, breche hier ab, um Abstürze zu verhindern
-        if (!linkKatalog || !catalogContent) return;
-
-        function wechsleAnsicht(ansicht) {
